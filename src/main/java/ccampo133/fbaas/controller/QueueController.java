@@ -1,7 +1,7 @@
-package fbq.controller;
+package ccampo133.fbaas.controller;
 
-import fbq.model.User;
-import fbq.service.QueueService;
+import ccampo133.fbaas.model.User;
+import ccampo133.fbaas.service.QueueService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

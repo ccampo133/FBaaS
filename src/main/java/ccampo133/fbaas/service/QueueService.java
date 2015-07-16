@@ -1,9 +1,9 @@
-package fbq.service;
+package ccampo133.fbaas.service;
 
-import fbq.exception.AlreadyInQueueException;
-import fbq.exception.EmptyQueueException;
-import fbq.exception.UserNotFoundException;
-import fbq.model.User;
+import ccampo133.fbaas.exception.AlreadyInQueueException;
+import ccampo133.fbaas.exception.EmptyQueueException;
+import ccampo133.fbaas.exception.UserNotFoundException;
+import ccampo133.fbaas.model.User;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +17,9 @@ import java.util.concurrent.PriorityBlockingQueue;
 @Service
 public class QueueService {
 
-    private final Queue<User> queue = new PriorityBlockingQueue<>();
+    private static int DEFAULT_INITIAL_CAPACITY = 11;
+
+    private final Queue<User> queue = new PriorityBlockingQueue<>(DEFAULT_INITIAL_CAPACITY, new UserComparator());
 
     // We keep track of the users IDs in a separate set to avoid having to linearly search
     // the priority queue (heap) every time to keep insertion roughly O(1) instead of O(n).
@@ -80,5 +82,21 @@ public class QueueService {
                 .filter(u -> u.getTimestamp() <= timestamp)
                 .mapToLong(u -> timestamp - u.getTimestamp())
                 .average().getAsDouble();
+    }
+
+    class UserComparator implements Comparator<User> {
+        @Override
+        public int compare(@NotNull final User user1, @NotNull final User user2) {
+            final long now = System.currentTimeMillis();
+            if (user1.isManagement() && user2.isManagement()) {
+                return Long.compare(user2.getPriority(now), user1.getPriority(now));
+            } else if (user1.isManagement()) {
+                return -1;
+            } else if (user2.isManagement()) {
+                return 1;
+            } else {
+                return Long.compare(user2.getPriority(now), user1.getPriority(now));
+            }
+        }
     }
 }
