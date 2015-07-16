@@ -1,5 +1,7 @@
 package fbq.model;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * @author Chris Campo
  */
@@ -22,35 +24,37 @@ public class User implements Comparable<User> {
 
     long getPriority(final long now) {
         final long dt = now - this.getTimestamp();
-        if (this.isFizz()) {
-            return (long) (dt * Math.log(dt));
-        } else if (this.isBuzz()) {
-            return (long) (2 * dt * Math.log(dt));
+        if (this.isPriority()) {
+            return Math.max(3, (long) (dt * Math.log(dt)));
+        } else if (this.isVIP()) {
+            return Math.max(4, (long) (2 * dt * Math.log(dt)));
         } else {
             return dt;
         }
     }
 
-    boolean isFizz() {
+    boolean isPriority() {
         return id % 3 == 0;
     }
 
-    boolean isBuzz() {
+    boolean isVIP() {
         return id % 5 == 0;
     }
 
-    boolean isFizzBuzz() {
-        return isFizz() && isBuzz();
+    boolean isManagement() {
+        return isPriority() && isVIP();
     }
 
+    // Have to do compareTo backwards here because Java's priority
+    // queue is based on a min heap, and we need a max heap.
     @Override
-    public int compareTo(final User other) {
+    public int compareTo(@NotNull final User other) {
         final long now = System.currentTimeMillis();
-        if (this.isFizzBuzz() && other.isFizzBuzz()) {
+        if (this.isManagement() && other.isManagement()) {
             return Long.compare(other.getPriority(now), this.getPriority(now));
-        } else if (this.isFizzBuzz()) {
+        } else if (this.isManagement()) {
             return -1;
-        } else if (other.isFizzBuzz()) {
+        } else if (other.isManagement()) {
             return 1;
         } else {
             return Long.compare(other.getPriority(now), this.getPriority(now));

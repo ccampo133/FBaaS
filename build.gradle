@@ -1,6 +1,7 @@
 buildscript {
     ext {
         springBootVersion = "1.2.5.RELEASE"
+        annotationsVersion = "13.0"
     }
     repositories {
         mavenCentral()
@@ -33,6 +34,7 @@ dependencies {
     //compile("org.springframework.boot:spring-boot-starter-jdbc")
     //compile("org.springframework.boot:spring-boot-starter-security")
     compile("org.springframework.boot:spring-boot-starter-web")
+    compile("org.jetbrains:annotations:${annotationsVersion}")
     //runtime("com.h2database:h2")
     testCompile("org.springframework.boot:spring-boot-starter-test")
 }
