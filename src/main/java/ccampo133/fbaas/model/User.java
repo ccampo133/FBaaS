@@ -1,5 +1,7 @@
 package ccampo133.fbaas.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * @author Chris Campo
  */
@@ -31,14 +33,17 @@ public class User {
         }
     }
 
+    @JsonIgnore
     public boolean isPriorityUser() {
         return id % 3 == 0;
     }
 
+    @JsonIgnore
     public boolean isVIP() {
         return id % 5 == 0;
     }
 
+    @JsonIgnore
     public boolean isManagement() {
         return isPriorityUser() && isVIP();
     }
