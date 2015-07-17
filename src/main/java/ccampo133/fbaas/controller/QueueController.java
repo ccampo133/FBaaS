@@ -3,9 +3,13 @@ package ccampo133.fbaas.controller;
 import ccampo133.fbaas.model.User;
 import ccampo133.fbaas.service.QueueService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
 
 /**
  * @author Chris Campo
@@ -23,10 +27,13 @@ public class QueueController {
 
     // Enqueue (add) a user to a queue
     @RequestMapping(value = "/users", method = RequestMethod.POST)
-    public ResponseEntity<User> addUser(final long id, final long timestamp) {
-        final User user = new User(id, timestamp);
-        queueService.addUser(user);
-        return new ResponseEntity<>(user, HttpStatus.CREATED);
+    public ResponseEntity<Void> addUser(final long id, final long timestamp) {
+        queueService.addUser(new User(id, timestamp));
+        final URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{userId}").buildAndExpand(id).toUri();
+        final HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(location);
+        return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 
     // Dequeue (pop) a user from the front of the queue
