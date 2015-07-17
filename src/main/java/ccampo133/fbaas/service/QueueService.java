@@ -25,6 +25,7 @@ public class QueueService {
     // the priority queue (heap) every time to keep insertion roughly O(1) instead of O(n).
     private final Set<Long> ids = Collections.newSetFromMap(new ConcurrentHashMap<>());
 
+    // O(1)
     public User dequeue() {
         try {
             final User user = queue.remove();
@@ -35,12 +36,14 @@ public class QueueService {
         }
     }
 
+    // O(nlogn)
     public User[] getUsers() {
         final User[] users = queue.toArray(new User[queue.size()]);
         Arrays.sort(users);
         return users;
     }
 
+    // O(n)
     public int getUserPositionById(final long id) {
         final User[] sortedUsers = getUsers();
         for (int i = 0; i < sortedUsers.length; ++i) {
@@ -51,6 +54,7 @@ public class QueueService {
         throw new UserNotFoundException("User with ID " + id + " not found");
     }
 
+    // O(n)
     public User getUserById(final long id) {
         return queue.stream()
                 .filter(u -> u.getId() == id)
@@ -58,6 +62,7 @@ public class QueueService {
                 .orElseThrow(() -> new UserNotFoundException("User with ID " + id + " not found"));
     }
 
+    // O(1)
     public void addUser(@NotNull final User user) {
         if (!ids.contains(user.getId())) {
             queue.add(user);
@@ -67,6 +72,7 @@ public class QueueService {
         }
     }
 
+    // O(n)
     public void removeUserById(final long id) {
         if (!ids.contains(id)) {
             throw new UserNotFoundException("User with ID " + id + " not found");
@@ -75,6 +81,7 @@ public class QueueService {
         ids.remove(id);
     }
 
+    // O(n)
     public double getAverageWaitTime(final long timestamp) {
         // Technically filter isn't required here, but it gets rid of funny values
         // (e.g. negative average times) when you input a timestamp in the past.
