@@ -8,6 +8,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  */
 @ResponseStatus(value = HttpStatus.NO_CONTENT)
 public class EmptyQueueException extends RuntimeException {
+
+    public EmptyQueueException(final String message) {
+        super(message);
+    }
+
     public EmptyQueueException(final String message, final Throwable cause) {
         super(message, cause);
     }

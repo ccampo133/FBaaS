@@ -81,7 +81,7 @@ public class QueueService {
         return queue.stream()
                 .filter(u -> u.getTimestamp() <= timestamp)
                 .mapToLong(u -> timestamp - u.getTimestamp())
-                .average().getAsDouble();
+                .average().orElseThrow(() -> new EmptyQueueException("Empty queue"));
     }
 
     class UserComparator implements Comparator<User> {
