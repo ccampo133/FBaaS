@@ -45,7 +45,7 @@ public class User {
 
     @JsonIgnore
     public boolean isManagement() {
-        return isPriorityUser() && isVIP();
+        return id % 15 == 0;
     }
 
     @Override
