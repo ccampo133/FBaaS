@@ -5,7 +5,7 @@ based on the classic interview question "Fizz Buzz". The API endpoint documentat
 
 Requires Java 8
 
-### Enqueue a user `[/queue] [POST]`
+### Enqueue a user `[/queue/users] [POST]`
 
 #### Parameters:
 
