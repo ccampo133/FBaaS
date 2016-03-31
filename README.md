@@ -90,10 +90,18 @@ since the Epoch (Jan 1 1970) in milliseconds; UTC.
 
     ./gradlew build
 
+or if you're on Windows:
+
+    gradlew.bat build
+
 ### To run:
 
     ./gradlew bootRun
-    
+
+or if you're on Windows:
+
+    gradle.bat bootRun    
+
 or build, and then run
 
     java -jar fizz-buzz-as-a-service-<version>.jar
@@ -102,6 +110,14 @@ or build, and then run
 
     ./gradlew idea
 
+or if you're on Windows:
+
+    gradlew.bat idea
+
 ### To generate an Eclipse project:
 
     ./gradlew eclipse
+
+or if you're on Windows:
+
+    gradlew.bat eclipse
