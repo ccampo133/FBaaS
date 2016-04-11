@@ -19,7 +19,9 @@ public class QueueService {
 
     private static int DEFAULT_INITIAL_CAPACITY = 11;
 
-    private final Queue<User> queue = new PriorityBlockingQueue<>(DEFAULT_INITIAL_CAPACITY, new UserComparator());
+    private final UserComparator userComparator = new UserComparator();
+
+    private final Queue<User> queue = new PriorityBlockingQueue<>(DEFAULT_INITIAL_CAPACITY, userComparator);
 
     // We keep track of the users IDs in a separate set to avoid having to linearly search
     // the priority queue (heap) every time to keep insertion roughly O(1) instead of O(n).
@@ -39,7 +41,7 @@ public class QueueService {
     // O(nlogn)
     public User[] getUsers() {
         final User[] users = queue.toArray(new User[queue.size()]);
-        Arrays.sort(users);
+        Arrays.sort(users, userComparator);
         return users;
     }
 
