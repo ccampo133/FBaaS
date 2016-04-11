@@ -121,3 +121,32 @@ or if you're on Windows:
 or if you're on Windows:
 
     gradlew.bat eclipse
+
+### Import project into eclipse:
+
+If needed Generate Eclipse project as stated above
+
+Import eclipse project:
+
+    Start Eclipse >> File >> Existing Project >> Navigate to projects location >> Finish
+
+### Run project and run Unit End-To-End tests
+
+Run project from terminal
+
+    ./gradlew bootRun
+
+Or from Windows
+
+    gradlew.bat bootRun
+
+Start Eclipse project and navigate to src/test/endToEnd/
+
+    Right click unitEndToEnd.java then select Run As >> JUnit Test
+
++ unitEndToEnd.java consists of multiple test cases providing live POST/GET/DELETE requests emulating user actions. Each test case asserts that the proper the proper Status response code for each REST action
+
+
+    Right click unitEndToEndFailedTest.java then select Run As >> JUnit Test
+
++ unitEndToEndFailedTest.java consists of a single get all users request after adding multiple users. This test fails because there seems to be an issue either from POST enqueue new users, or GET list all users
